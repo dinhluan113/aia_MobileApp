@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, Alert, Dimensions, Image } from 'react-
 import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
 import Images from '../../../assets/images.js';
+import GradientButton from 'react-native-gradient-buttons';
 
 class LoginScreen extends Component {
     handleLogin = () => {
@@ -18,7 +19,20 @@ class LoginScreen extends Component {
                         <Image style={styles.logoIcon} source={Images.IconLogo} />
                     </View>
                     <View>
-                        <Button onPress={this.handleLogin} title="Log in" style={styles.btnLogin}/>
+                        <GradientButton
+                            style={{ marginVertical: 8 }}
+                            text="Đăng nhập"
+                            textStyle={{ fontSize: 16 }}
+                            gradientBegin="#0ac5b8"
+                            gradientEnd="#29d990"
+                            gradientDirection="diagonal"
+                            height={45}
+                            width={250}
+                            radius={7}
+                            impact
+                            impactStyle='Light'
+                            onPressAction={this.handleLogin}
+                        />
                     </View>
                 </View>
             </View>
@@ -63,7 +77,5 @@ const styles = StyleSheet.create({
         height: 200,
         margin: 'auto',
         marginBottom: 20
-    },
-    btnLogin: {
     }
 });
