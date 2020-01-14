@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, Alert, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Image } from 'react-native';
 import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
 import Images from '../../../assets/images.js';
-import GradientButton from 'react-native-gradient-buttons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 class LoginScreen extends Component {
     handleLogin = () => {
@@ -19,20 +19,11 @@ class LoginScreen extends Component {
                         <Image style={styles.logoIcon} source={Images.IconLogo} />
                     </View>
                     <View>
-                        <GradientButton
-                            style={{ marginVertical: 8 }}
-                            text="Đăng nhập"
-                            textStyle={{ fontSize: 16 }}
-                            gradientBegin="#0ac5b8"
-                            gradientEnd="#29d990"
-                            gradientDirection="diagonal"
-                            height={45}
-                            width={250}
-                            radius={7}
-                            impact
-                            impactStyle='Light'
-                            onPressAction={this.handleLogin}
-                        />
+                        <TouchableOpacity onPress={this.handleLogin} activeOpacity={0.7}>
+                            <LinearGradient colors={['#29d990', '#0ac5b8']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: 'center', padding: 10, borderRadius: 4 }}>
+                                <Text style={{color: '#fff'}}>Đăng nhập</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

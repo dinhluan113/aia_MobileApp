@@ -9,6 +9,7 @@ import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
 // Components
 import HomeScreen from '../home/home.js';
+import EmployerScreen from '../employer/employer_list.js';
 import SettingsScreen from '../setting/setting.js';
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
@@ -26,6 +27,7 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
 const TabNavigator = createBottomTabNavigator(
     {
         Home: HomeScreen,
+        Employer: EmployerScreen,
         Settings: SettingsScreen,
     },
     {

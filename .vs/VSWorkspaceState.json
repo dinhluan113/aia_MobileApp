@@ -1,8 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\assets",
+    "\\assets\\imgs",
     "\\src",
     "\\src\\components",
+    "\\src\\components\\account",
+    "\\src\\components\\employer",
     "\\src\\components\\home",
     "\\src\\components\\layout"
   ],
