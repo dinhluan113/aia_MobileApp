@@ -68,26 +68,6 @@ export default class EmployerScreen extends React.Component {
             <Text>6</Text>
             <Text>7</Text>
             <Text>8</Text>
-            <Text>911</Text>
-            <Text>11</Text>
-            <Text>123</Text>
-            <Text>112323</Text>
-            <Text>112323</Text>
-            <Text>412356</Text>
-            <Text>121233</Text>
-            <Text>123123</Text>
-            <Text>123123</Text>
-            <Text>123123</Text>
-            <Text>112323</Text>
-            <Text>121233</Text>
-            <Text>412312356</Text>
-            <Text>1</Text>
-            <Text>2</Text>
-            <Text>3</Text>
-            <Text>123</Text>
-            <Text>321</Text>
-            <Text>123</Text>
-            <Text>123213</Text>
         </ScrollView>
     )
     render() {
