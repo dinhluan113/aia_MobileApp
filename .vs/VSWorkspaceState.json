@@ -5,10 +5,11 @@
     "\\assets\\imgs",
     "\\src",
     "\\src\\components",
+    "\\src\\components\\account",
     "\\src\\components\\contracts",
     "\\src\\components\\employer",
     "\\src\\components\\layout"
   ],
-  "SelectedNode": "\\src\\components\\employer\\employer_list.js",
+  "SelectedNode": "\\src\\components\\contracts\\contract_items.js",
   "PreviewInSolutionExplorer": false
 }

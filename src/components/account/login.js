@@ -15,7 +15,7 @@ class LoginScreen extends Component {
                 <View style={styles.container}>
                     <View style={styles.containerChild}>
                         <Text style={styles.title} >Your Home.<Text style={styles.titlePrimary}> Greener.</Text></Text>
-                        <Text style={styles.subTitle}>Quản lý nhà trọ thông minh</Text>
+                        <Text style={styles.subTitle}>Quản lý thông tin hợp đồng</Text>
                         <Image style={styles.logoIcon} source={Images.IconLogo} />
                     </View>
                     <View>

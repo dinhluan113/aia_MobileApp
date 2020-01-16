@@ -2,6 +2,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons'; // 6.2.2
+import NumberFormat from 'react-number-format';
 
 export default class HomeBoxDateCommit extends React.Component {
     state = {
@@ -38,7 +39,13 @@ export default class HomeBoxDateCommit extends React.Component {
                     </View>
                     <TouchableOpacity style={{ flex: 2, justifyContent: 'center' }} activeOpacity={.5} onPress={this.show}>
                         <Text style={[styles.txtSubBoxInfo, { textAlign: 'left' }]}>Commit</Text>
-                        <Text>150.000.000 đ</Text>
+                        <NumberFormat
+                            value={150000000}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            suffix={'₫'}
+                            renderText={value => <Text numberOfLines={1}>{value}</Text>}
+                        />
                     </TouchableOpacity>
                 </View>
                 {show && <DateTimePicker value={date}

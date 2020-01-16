@@ -5,7 +5,10 @@ import NumberFormat from 'react-number-format';
 
 const styles = StyleSheet.create({
     boxActivity: {
-        flex: 1, justifyContent: 'center', backgroundColor: '#fff',
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        height: 70,
         shadowOffset: {
             width: 0,
             height: 3,
@@ -18,11 +21,11 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection: 'row',
         borderLeftColor: '#012456',
-        borderLeftWidth: 2, 
+        borderLeftWidth: 2,
     },
 });
 
-export default class ContractItem extends React.Component {
+export default class EmployertItem extends React.Component {
     constructor(props) {
         super(props);
     }
