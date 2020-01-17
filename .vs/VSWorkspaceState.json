@@ -2,7 +2,6 @@
   "ExpandedNodes": [
     "",
     "\\assets",
-    "\\assets\\imgs",
     "\\src",
     "\\src\\components",
     "\\src\\components\\account",
@@ -10,6 +9,6 @@
     "\\src\\components\\employer",
     "\\src\\components\\layout"
   ],
-  "SelectedNode": "\\src\\components\\contracts\\contract_items.js",
+  "SelectedNode": "\\assets\\stylesGlobal.js",
   "PreviewInSolutionExplorer": false
 }

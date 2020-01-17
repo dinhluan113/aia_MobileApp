@@ -10,6 +10,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const avatarWidth = 50;
 const styles = StyleSheet.create({
+    container: {
+        flexGrow: 1
+    },
+    input: {
+        height: 50,
+        backgroundColor: '#fff',
+    }
 });
 
 export default class EmployertItemAdd extends React.Component {
@@ -27,32 +34,24 @@ export default class EmployertItemAdd extends React.Component {
     render() {
         return (
             <KeyboardAwareScrollView
-                style={{ backgroundColor: '#4c69a5' }}
                 resetScrollToCoords={{ x: 0, y: 0 }}
-                contentContainerStyle={styles.container}
-                scrollEnabled={false}
+                scrollEnabled={true}
+                contentContainerStyle={{ flexGrow: 1 }}
+                enableOnAndroid={true}
+                extraScrollHeight={100}
             >
-                <TextInput
-                    placeholder="Email"
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Username"
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Password"
-                    style={styles.input}
-                />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
-                <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
+                <View style={{ alignItems: 'center', padding: 17 }}>
+                    <View style={[{ width: 105, height: 105, borderRadius: 105 / 2, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }, StyleGlobal.boxShadowSoft]}>
+                        <Image source={ListImages.EmployerDefaltAvatar} style={{ width: 100, height: 100, borderRadius: 100 / 2 }} />
+                    </View>
+                </View>
+                <View style={{ alignItems: 'center', paddingBottom: 100 }}>
+                    <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
+                    <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
+                    <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
+                    <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
+                    <Input label='Họ và tên' leftIconContainerStyle={{ marginRight: 10 }} leftIcon={<Icon name='user' size={24} color='black' />} />
+                </View>
             </KeyboardAwareScrollView>
 
         )
