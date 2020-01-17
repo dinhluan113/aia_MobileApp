@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons'; // 6.2.2
 import NumberFormat from 'react-number-format';
+import StyleGlobal from '../../../assets/stylesGlobal.js';
 
 export default class HomeBoxDateCommit extends React.Component {
     state = {
@@ -29,7 +30,7 @@ export default class HomeBoxDateCommit extends React.Component {
         const { show, date } = this.state;
         return (
             <View style={{ position: 'absolute', bottom: 10, left: 0, right: 0, justifyContent: 'center', alignItems: 'center' }}>
-                <View style={styles.boxInfo}>
+                <View style={[styles.boxInfo, StyleGlobal.boxShadowHeavy]}>
                     <TouchableOpacity style={{ flex: 2, justifyContent: 'center' }} activeOpacity={.5} onPress={this.show}>
                         <Text style={[styles.txtSubBoxInfo, { textAlign: 'right' }]}>Choose date</Text>
                         <Text style={{ textAlign: 'right' }}>{parseInt(date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
@@ -64,14 +65,6 @@ const styles = StyleSheet.create({
         borderRadius: 110 / 2,
         width: 250,
         height: 60,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.43,
-        shadowRadius: 9.51,
-        elevation: 15,
         flex: 1,
         flexDirection: 'row'
     },

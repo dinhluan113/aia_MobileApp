@@ -1,8 +1,7 @@
 ﻿import * as React from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-
-import imgAvatar from '../../../assets/imgs/iconfinder_Avatar.png'
+import ListImages from '../../../assets/images.js';
 
 import HomeBoxDateCommit from './home_BoxDateCommit';
 
@@ -15,7 +14,7 @@ export default class HomeNavbar extends React.Component {
                 <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.topHeader}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ backgroundColor: '#fff', borderRadius: 110 / 2 }}>
-                            <Image source={imgAvatar} style={{ width: 110, height: 110, borderRadius: 110 / 2 }} />
+                            <Image source={ListImages.UserDefaultAvatar} style={{ width: 110, height: 110, borderRadius: 110 / 2 }} />
                         </View>
                         <Text style={{ marginTop: 10, marginBottom: 55, color: '#fff' }}>User Name</Text>
                     </View>

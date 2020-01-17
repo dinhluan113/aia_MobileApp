@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 import ContractItems from '../contracts/contract_items';
+import StyleGlobal from '../../../assets/stylesGlobal.js';
 
 const lstItems = [{
     Id: 1,
@@ -26,11 +27,11 @@ export default class HomeContent extends React.Component {
             <View style={{ backgroundColor: '#f0f9ff' }}>
                 <View style={{ padding: 20, flex: 1, flexDirection: 'column', paddingTop: 50 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity style={[styles.boxDetail, { marginRight: 10 }]} activeOpacity={.5} onPress={this.show}>
+                        <TouchableOpacity style={[styles.boxDetail, StyleGlobal.boxShadowSoft, { marginRight: 10 }]} activeOpacity={.5} onPress={this.show}>
                             <Text style={{ color: '#8f94a2', fontSize: 12 }}>FYP</Text>
                             <Text style={{ color: '#333', fontSize: 17 }}>100.000.000 đ</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.boxDetail, { marginLeft: 10 }]} activeOpacity={.5} onPress={this.show}>
+                        <TouchableOpacity style={[styles.boxDetail, StyleGlobal.boxShadowSoft, { marginLeft: 10 }]} activeOpacity={.5} onPress={this.show}>
                             <Text style={{ color: '#8f94a2', fontSize: 12 }}>Need to do</Text>
                             <Text style={{ color: '#333', fontSize: 17 }}>50.000.000 đ</Text>
                         </TouchableOpacity>
@@ -50,13 +51,6 @@ export default class HomeContent extends React.Component {
 const styles = StyleSheet.create({
     boxDetail: {
         flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', height: 100,
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        elevation: 6,
         borderRadius: 10
     },
     txtTitle: {
