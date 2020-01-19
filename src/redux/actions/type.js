@@ -1,2 +1,3 @@
-export const LOGIN = true;
-export const LOGOUT = false;
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const CURRENT_DATE = 'CURRENT_DATE';

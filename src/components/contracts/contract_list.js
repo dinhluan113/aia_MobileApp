@@ -6,7 +6,7 @@ import { SearchBar } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons'; // 6.2.2
 
-import EmployerItem from './employer_item';
+import ContractItem from './contract_items';
 import StyleGlobal from '../../../assets/stylesGlobal.js';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 });
 
 
-class EmployerTitle extends React.Component {
+class ContractTitle extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -64,12 +64,12 @@ class EmployerTitle extends React.Component {
                 <TouchableOpacity style={{ position: 'absolute', right: 10, top: 12, width: 35, height: 35 }} onPress={this.toogleSearch}>
                     <Icon name="search" size={25} color="#fff" />
                 </TouchableOpacity>
-                <Text style={{ position: 'absolute', left: 50, right: 50, top: 12, textAlign: 'center', color: '#fff', fontSize: 17, fontWeight: '700' }}>Danh sách nhân viên</Text>
+                <Text style={{ position: 'absolute', left: 50, right: 50, top: 12, textAlign: 'center', color: '#fff', fontSize: 17, fontWeight: '700' }}>Danh sách hợp đồng</Text>
                 {
                     isShowSearchBox ?
                         <SearchBar
                             platform='ios'
-                            placeholder="Tìm kiếm nhân viên..."
+                            placeholder="Tìm kiếm hợp đồng..."
                             onChangeText={this.updateSearch}
                             containerStyle={{ backgroundColor: 'transparent' }}
                             inputContainerStyle={{ backgroundColor: '#fff' }}
@@ -86,7 +86,7 @@ class EmployerTitle extends React.Component {
 }
 
 
-class EmployerSearchBox extends React.Component {
+class ContractSearchBox extends React.Component {
     state = {
         search: '',
     };
@@ -114,47 +114,21 @@ class EmployerSearchBox extends React.Component {
     }
 }
 
-const lstItems = [
-    {
-        Id: 1,
-        customer_Name: "Robert Langdon",
-        customer_Phone: "0987654123",
-    }, {
-        Id: 2,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 3,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 4,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 5,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 6,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 7,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 8,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 9,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    },
-];
+const lstItems = [{
+    Id: 1,
+    customer_Name: "Blue",
+    dateCreated: "2020-01-15",
+    userName: "ABC",
+    nfyp: 15000000
+}, {
+    Id: 2,
+    customer_Name: "Red",
+    dateCreated: "2020-01-10",
+    userName: "XYZ",
+    nfyp: 19000000
+}];
 
-export default class EmployerScreenList extends React.Component {
+export default class ContractScreenList extends React.Component {
 
     //static navigationOptions = { headerShown: false }
 
@@ -167,16 +141,16 @@ export default class EmployerScreenList extends React.Component {
     }
 
     onGoToAddPage = () => {
-        this.props.navigation.navigate({ routeName: 'EmployerItemAdd' })
+        this.props.navigation.navigate({ routeName: 'ContractItemAdd'})
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <EmployerTitle onChangeKW={this.onChangeSearch} onGoToAddPage={this.onGoToAddPage} />
+                <ContractTitle onChangeKW={this.onChangeSearch} onGoToAddPage={this.onGoToAddPage} />
 
-                <ScrollView style={{ flex: 1, flexDirection: 'column' }}>
-                    <EmployerItem lstItems={lstItems} />
+                <ScrollView style={{ flex: 1, flexDirection: 'column', paddingLeft: 10, paddingRight: 10 }}>
+                    <ContractItem lstItems={lstItems} />
                 </ScrollView>
                 <TouchableOpacity
                     activeOpacity={0.7}

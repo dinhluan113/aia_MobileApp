@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Image, StatusBar } from 'react-native';
 import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
 import Images from '../../../assets/images.js';
@@ -21,7 +21,7 @@ class LoginScreen extends Component {
                     <View>
                         <TouchableOpacity onPress={this.handleLogin} activeOpacity={0.7}>
                             <LinearGradient colors={['#29d990', '#0ac5b8']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: 'center', padding: 10, borderRadius: 4 }}>
-                                <Text style={{color: '#fff'}}>Đăng nhập</Text>
+                                <Text style={{ color: '#fff' }}>Đăng nhập</Text>
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>
@@ -31,13 +31,9 @@ class LoginScreen extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    loginStatus: state.loginStatus
-});
+export default connect(null, actions)(LoginScreen);
 
-export default connect(mapStateToProps, actions)(LoginScreen);
-
-let ScreenHeight = Dimensions.get("window").height;
+let ScreenHeight = Dimensions.get("window").height + StatusBar.currentHeight;
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: '#ebeef0',

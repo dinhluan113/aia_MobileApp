@@ -1,11 +1,12 @@
 ﻿import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, Image, Dimensions } from 'react-native';
 
 import { ScrollView } from 'react-native-gesture-handler';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 import ContractItems from '../contracts/contract_items';
 import StyleGlobal from '../../../assets/stylesGlobal.js';
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const lstItems = [{
     Id: 1,
@@ -22,6 +23,8 @@ const lstItems = [{
 }];
 
 export default class HomeContent extends React.Component {
+
+
     render() {
         return (
             <View style={{ backgroundColor: '#f0f9ff' }}>
@@ -37,7 +40,7 @@ export default class HomeContent extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ padding: 20, flex: 1, flexDirection: 'column', minHeight: 450 }}>
+                <View style={{ padding: 20, flex: 1, flexDirection: 'column', minHeight: SCREEN_HEIGHT - 120 }}>
                     <Text style={styles.txtTitle}>Recent Activity</Text>
                     <View style={{ flex: 1, flexDirection: 'column' }}>
                         <ContractItems lstItems={lstItems} />

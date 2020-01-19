@@ -1,14 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\assets",
     "\\src",
     "\\src\\components",
-    "\\src\\components\\account",
     "\\src\\components\\contracts",
-    "\\src\\components\\employer",
-    "\\src\\components\\layout"
+    "\\src\\components\\home",
+    "\\src\\components\\layout",
+    "\\src\\redux",
+    "\\src\\redux\\actions",
+    "\\src\\redux\\reducers",
+    "\\src\\redux\\store"
   ],
-  "SelectedNode": "\\assets\\stylesGlobal.js",
+  "SelectedNode": "\\src\\components\\contracts\\contract_add.js",
   "PreviewInSolutionExplorer": false
 }
