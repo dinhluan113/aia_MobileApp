@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\components",
+    "\\src\\components\\account",
     "\\src\\components\\contracts",
-    "\\src\\components\\home",
-    "\\src\\components\\layout",
-    "\\src\\redux",
+    "\\src\\components\\employer",
     "\\src\\redux\\actions",
     "\\src\\redux\\reducers",
-    "\\src\\redux\\store"
+    "\\src\\redux\\store",
+    "\\src\\repositories"
   ],
-  "SelectedNode": "\\src\\components\\contracts\\contract_add.js",
+  "SelectedNode": "\\src\\repositories\\Repository.js",
   "PreviewInSolutionExplorer": false
 }
