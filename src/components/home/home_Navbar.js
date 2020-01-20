@@ -8,6 +8,10 @@ import HomeBoxDateCommit from './home_BoxDateCommit';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default class HomeNavbar extends React.Component {
+    onChangeDate = (month, year) => {
+        this.props.onChangeDate(month, year);
+    }
+
     render() {
         return (
             <View style={{ width: SCREEN_WIDTH, backgroundColor: '#f0f9ff' }}>
@@ -20,7 +24,7 @@ export default class HomeNavbar extends React.Component {
                     </View>
                 </LinearGradient>
 
-                <HomeBoxDateCommit />
+                <HomeBoxDateCommit crrCommit={this.props.crrCommit} onChangeDate={this.onChangeDate} />
             </View>
         );
     }
@@ -28,7 +32,7 @@ export default class HomeNavbar extends React.Component {
 
 const styles = StyleSheet.create({
     topHeader: {
-        paddingTop: StatusBar.currentHeight + 10,
+        paddingTop: StatusBar.currentHeight + 20,
         minHeight: 200,
         borderBottomLeftRadius: 35,
         borderBottomRightRadius: 35,

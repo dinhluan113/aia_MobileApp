@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, Image, D
 
 import { ScrollView } from 'react-native-gesture-handler';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
+import NumberFormat from 'react-number-format';
 
 import ContractItems from '../contracts/contract_items';
 import StyleGlobal from '../../../assets/stylesGlobal.js';
@@ -23,7 +24,9 @@ const lstItems = [{
 }];
 
 export default class HomeContent extends React.Component {
-
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
@@ -32,11 +35,24 @@ export default class HomeContent extends React.Component {
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity style={[styles.boxDetail, StyleGlobal.boxShadowSoft, { marginRight: 10 }]} activeOpacity={.5} onPress={this.show}>
                             <Text style={{ color: '#8f94a2', fontSize: 12 }}>FYP</Text>
-                            <Text style={{ color: '#333', fontSize: 17 }}>100.000.000 đ</Text>
+                            <NumberFormat
+                                value={this.props.crrFYP}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={'₫'}
+                                renderText={value => <Text style={{ color: '#333', fontSize: 17 }} numberOfLines={1}>{value}</Text>}
+                            />
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.boxDetail, StyleGlobal.boxShadowSoft, { marginLeft: 10 }]} activeOpacity={.5} onPress={this.show}>
                             <Text style={{ color: '#8f94a2', fontSize: 12 }}>Need to do</Text>
-                            <Text style={{ color: '#333', fontSize: 17 }}>50.000.000 đ</Text>
+                            <Text style={{ color: '#8f94a2', fontSize: 12 }}>FYP</Text>
+                            <NumberFormat
+                                value={this.props.crrNeedToDo}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={'₫'}
+                                renderText={value => <Text style={{ color: '#333', fontSize: 17 }} numberOfLines={1}>{value}</Text>}
+                            />
                         </TouchableOpacity>
                     </View>
                 </View>

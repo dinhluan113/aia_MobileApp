@@ -10,8 +10,10 @@ import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 import HomeNavbar from './home_Navbar';
 import HomeContent from './home_Content';
-import HomeBoxDateCommit from './home_BoxDateCommit';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import { RepositoryFactory } from '../../repositories/RepositoryFactory';
+const CommitRepository = RepositoryFactory.get('commit')
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -21,34 +23,78 @@ const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 
 const _crrDate = new Date();
+let JWT_TOKEN = '';
 
 class HomeScreenConnect extends React.Component {
     constructor(props) {
         super(props);
+        JWT_TOKEN = this.props.getJWTToken;
         let date = {
             'Month': _crrDate.getMonth() + 1,
             'Year': _crrDate.getFullYear()
         };
         this.props.doSetcrrDate(date);
+        this.getCurrentCommit(date.Month, date.Year);
+    }
+
+    state = {
+        crrCommit: 0,
+        crrFYP: 0,
+        crrNeedToDo: 0,
+    }
+
+    onChangeDate = (month, year) => {
+        this.getCurrentCommit(month, year);
+    }
+
+    getCurrentCommit = (month, year) => {
+        let _this = this;
+        let promise = CommitRepository.GetCommitByMonth(month, year, JWT_TOKEN);
+        promise
+            .then(function (response) {
+                let commitValue = 0;
+                let crrFYPValue = 0;
+                let crrNeedToDoValue = 0;
+                if (typeof response.data.crrCommit != 'undefined') {
+                    commitValue = response.data.crrCommit;
+                    crrFYPValue = response.data.fyp;
+                    crrNeedToDoValue = response.data.remain;
+                }
+
+                _this.setState({
+                    crrCommit: commitValue,
+                    crrFYP: crrFYPValue,
+                    crrNeedToDo: crrNeedToDoValue,
+                });
+            })
+            .catch(function (e) {
+                alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
+                _this.props.doLogout();
+            })
+            .finally(function () {
+
+            });
     }
 
     renderNavBar = () => (
-        <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: 115, }}>
-            <HomeBoxDateCommit />
+        <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: STATUS_BAR_HEIGHT + 50, paddingTop: STATUS_BAR_HEIGHT, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: '#fff' }}>Quản lý hợp đồng thông minh</Text>
         </LinearGradient>
     )
 
     renderContent = () => (
-        <HomeContent />
+        <HomeContent crrFYP={this.state.crrFYP} crrNeedToDo={this.state.crrNeedToDo} />
     )
+
     render() {
+        let { crrCommit } = this.state;
         return (
             <View style={styles.container}>
                 <ReactNativeParallaxHeader
-                    headerMinHeight={105}
+                    headerMinHeight={50}
                     headerMaxHeight={250}
                     extraScrollHeight={0}
-                    title={<HomeNavbar />}
+                    title={<HomeNavbar crrCommit={crrCommit} onChangeDate={this.onChangeDate} />}
                     renderNavBar={this.renderNavBar}
                     renderContent={this.renderContent}
                     alwaysShowTitle={false}
@@ -66,12 +112,12 @@ class HomeScreenConnect extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#f0f9ff',
-        flex: 1
+        flex: 1,
     },
 });
 
 const mapStateToProps = state => ({
-    getCurrentDate: state.getCurrentDate,
+    getJWTToken: state.getJWTToken
 });
 
 const ConnectedRoot = connect(mapStateToProps, actions)(HomeScreenConnect);
