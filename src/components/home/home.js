@@ -94,7 +94,7 @@ class HomeScreenConnect extends React.Component {
                     headerMinHeight={50}
                     headerMaxHeight={250}
                     extraScrollHeight={0}
-                    title={<HomeNavbar crrCommit={crrCommit} onChangeDate={this.onChangeDate} />}
+                    title={<HomeNavbar crrCommit={crrCommit} onChangeDate={this.onChangeDate} email={this.props.getCurrentEmail}/>}
                     renderNavBar={this.renderNavBar}
                     renderContent={this.renderContent}
                     alwaysShowTitle={false}
@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    getJWTToken: state.getJWTToken
+    getJWTToken: state.getJWTToken,
+    getCurrentEmail: state.getCurrentEmail
 });
 
 const ConnectedRoot = connect(mapStateToProps, actions)(HomeScreenConnect);

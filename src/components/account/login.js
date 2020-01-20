@@ -30,6 +30,7 @@ class LoginScreen extends Component {
             'UserName': this.state.email,
             'Password': this.state.password,
         }
+        this.props.doSetEmail(dto.UserName);
         let promise = UsersRepository.checkLogin(dto);
         const _this = this;
         promise

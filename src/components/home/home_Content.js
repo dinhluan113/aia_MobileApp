@@ -45,7 +45,6 @@ export default class HomeContent extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.boxDetail, StyleGlobal.boxShadowSoft, { marginLeft: 10 }]} activeOpacity={.5} onPress={this.show}>
                             <Text style={{ color: '#8f94a2', fontSize: 12 }}>Need to do</Text>
-                            <Text style={{ color: '#8f94a2', fontSize: 12 }}>FYP</Text>
                             <NumberFormat
                                 value={this.props.crrNeedToDo}
                                 displayType={'text'}

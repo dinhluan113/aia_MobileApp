@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 const _startYear = 2019;
 const _endYear = _startYear + 5;
 
+let JWT_TOKEN = '';
 class HomeBoxDateCommit extends React.Component {
     constructor(props) {
         super(props)
