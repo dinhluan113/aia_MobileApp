@@ -11,14 +11,17 @@ import { connect } from 'react-redux';
 const _startYear = 2019;
 const _endYear = _startYear + 5;
 
-
+let JWT_TOKEN = '';
 class HomeBoxDateCommit extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            startYear: _startYear,
-            endYear: _endYear          
-        }
+        JWT_TOKEN = this.props.getJWTToken;
+        let selectedDate = this.props.getCurrentDate;
+    }
+    
+    state = {
+        startYear: _startYear,
+        endYear: _endYear,
     }
 
     showPicker = () => {
@@ -29,7 +32,8 @@ class HomeBoxDateCommit extends React.Component {
         this.picker
             .show({ startYear, endYear, selectedYear, selectedMonth })
             .then(({ year, month }) => {
-                this.props.doSetcrrDate({ 'Month': month, 'Year': year});
+                this.props.doSetcrrDate({ 'Month': month, 'Year': year });
+                this.props.onChangeDate(month, year);
             });
     }
 
@@ -37,6 +41,7 @@ class HomeBoxDateCommit extends React.Component {
         let selectedDate = this.props.getCurrentDate;
         let selectedMonth = selectedDate.Month;
         let selectedYear = selectedDate.Year
+        let crrCommit = this.props.crrCommit;
         return (
             <View style={{ position: 'absolute', bottom: 10, left: 0, right: 0, justifyContent: 'center', alignItems: 'center' }}>
                 <View style={[styles.boxInfo, StyleGlobal.boxShadowHeavy]}>
@@ -50,7 +55,7 @@ class HomeBoxDateCommit extends React.Component {
                     <TouchableOpacity style={{ flex: 2, justifyContent: 'center' }} activeOpacity={.5} onPress={this.showPicker}>
                         <Text style={[styles.txtSubBoxInfo, { textAlign: 'left' }]}>Commit</Text>
                         <NumberFormat
-                            value={150000000}
+                            value={crrCommit}
                             displayType={'text'}
                             thousandSeparator={true}
                             suffix={'₫'}
@@ -83,6 +88,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     getCurrentDate: state.getCurrentDate,
+    getJWTToken: state.getJWTToken,
 });
 
 export default connect(mapStateToProps, actions)(HomeBoxDateCommit);

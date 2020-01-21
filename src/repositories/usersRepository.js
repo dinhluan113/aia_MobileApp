@@ -23,10 +23,8 @@ export default {
     checkLogin(dto) {
         return Repository.post(`${resource}`, dto, {
             'headers': {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
-            crossDomain: true
         });
     },
 };
