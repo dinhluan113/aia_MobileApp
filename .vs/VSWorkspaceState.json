@@ -6,9 +6,6 @@
     "\\src\\components\\account",
     "\\src\\components\\contracts",
     "\\src\\components\\employer",
-    "\\src\\redux\\actions",
-    "\\src\\redux\\reducers",
-    "\\src\\redux\\store",
     "\\src\\repositories"
   ],
   "SelectedNode": "\\src\\repositories\\Repository.js",
