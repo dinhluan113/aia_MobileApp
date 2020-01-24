@@ -11,20 +11,22 @@ export default class HomeNavbar extends React.Component {
     onChangeDate = (month, year) => {
         this.props.onChangeDate(month, year);
     }
-
+    onChangeCommit = (value) => {
+        this.props.onChangeCommit(value);
+    }
     render() {
         return (
             <View style={{ width: SCREEN_WIDTH, backgroundColor: '#f0f9ff' }}>
                 <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.topHeader}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <View style={{ backgroundColor: '#fff', borderRadius: 110 / 2 }}>
+                        {/*<View style={{ backgroundColor: '#fff', borderRadius: 110 / 2 }}>
                             <Image source={ListImages.UserDefaultAvatar} style={{ width: 110, height: 110, borderRadius: 110 / 2 }} />
-                        </View>
-                        <Text style={{ marginTop: 10, marginBottom: 55, color: '#fff', textTransform: 'lowercase' }}>{this.props.email}</Text>
+                        </View>*/}
+                        <Text style={{ marginTop: 10, marginBottom: 5, color: '#fff', textTransform: 'lowercase' }}>{this.props.email}</Text>
                     </View>
                 </LinearGradient>
 
-                <HomeBoxDateCommit crrCommit={this.props.crrCommit} onChangeDate={this.onChangeDate} />
+                <HomeBoxDateCommit crrCommit={this.props.crrCommit} onChangeCommit={this.onChangeCommit} onChangeDate={this.onChangeDate} />
             </View>
         );
     }
@@ -33,7 +35,7 @@ export default class HomeNavbar extends React.Component {
 const styles = StyleSheet.create({
     topHeader: {
         paddingTop: StatusBar.currentHeight + 20,
-        minHeight: 200,
+        minHeight: 125,
         borderBottomLeftRadius: 35,
         borderBottomRightRadius: 35,
         marginBottom: 35,

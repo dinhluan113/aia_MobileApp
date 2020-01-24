@@ -1,13 +1,18 @@
 ﻿import * as React from 'react';
-import { Dimensions, StyleSheet, View, TouchableOpacity, Text, StatusBar, ScrollView, Button } from 'react-native';
+import { Dimensions, StyleSheet, View, TouchableOpacity, Text, StatusBar, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
-import { SearchBar } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons'; // 6.2.2
 
-import EmployerItem from './employer_item';
+import EmployerItem from './employer_items';
 import StyleGlobal from '../../../assets/stylesGlobal.js';
+
+import { connect } from 'react-redux';
+
+import { RepositoryFactory } from '../../repositories/RepositoryFactory';
+const EmployerRepository = RepositoryFactory.get('employer');
+
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -22,162 +27,161 @@ const styles = StyleSheet.create({
         paddingTop: STATUS_BAR_HEIGHT,
     },
 });
-
+let JWT_TOKEN = '';
 
 class EmployerTitle extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    state = {
-        search: '',
-        isShowSearchBox: false
-    }
-
-    toogleSearch = () => {
-        this.setState({
-            isShowSearchBox: !this.state.isShowSearchBox
-        });
-    }
-
-    updateSearch = search => {
-        this.setState({ search });
-    };
-
-    focusTextInput = () => {
-        this.props.onChangeKW(this.state.search);
-    };
-
     onGoToAddPage = () => {
         this.props.onGoToAddPage();
     };
 
     render() {
-        const isShowSearchBox = this.state.isShowSearchBox;
-        const { search } = this.state;
-        let lineHeight = isShowSearchBox ? 100 : 50;
         return (
-            <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: lineHeight, paddingTop: 35 }}>
+            <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: 50, paddingTop: 35 }}>
                 <TouchableOpacity style={{ position: 'absolute', left: 10, top: 12 }} onPress={() => this.onGoToAddPage()}>
                     <Icon name="add" size={25} color="#fff" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ position: 'absolute', right: 10, top: 12, width: 35, height: 35 }} onPress={this.toogleSearch}>
-                    <Icon name="search" size={25} color="#fff" />
-                </TouchableOpacity>
-                <Text style={{ position: 'absolute', left: 50, right: 50, top: 12, textAlign: 'center', color: '#fff', fontSize: 17, fontWeight: '700' }}>Danh sách nhân viên</Text>
-                {
-                    isShowSearchBox ?
-                        <SearchBar
-                            platform='ios'
-                            placeholder="Tìm kiếm nhân viên..."
-                            onChangeText={this.updateSearch}
-                            containerStyle={{ backgroundColor: 'transparent' }}
-                            inputContainerStyle={{ backgroundColor: '#fff' }}
-                            value={search}
-                            cancelButtonTitle='Hủy'
-                            cancelButtonProps={{ buttonTextStyle: { color: '#fff' } }}
-                            onBlur={this.focusTextInput}
-                        />
-                        : <Text></Text>
-                }
+                <Text style={{ position: 'absolute', left: 50, right: 50, top: 12, textAlign: 'center', color: '#fff', fontSize: 17, fontWeight: '700' }}>Danh sách nhân viên</Text>                
             </LinearGradient>
         );
     }
 }
 
+const mapStateToProps = state => ({
+    getJWTToken: state.getJWTToken,
+});
 
-class EmployerSearchBox extends React.Component {
-    state = {
-        search: '',
-    };
+let _IS_MOUNTED = false;
 
-    updateSearch = search => {
-        this.setState({ search });
-        this.props.onChangeKW(search);
-    };
+class EmployerScreenList extends React.Component {
 
-    render() {
-        const { search } = this.state;
-
-        return (
-            <SearchBar
-                platform='ios'
-                placeholder="Tìm kiếm nhân viên..."
-                onChangeText={this.updateSearch}
-                containerStyle={{ backgroundColor: 'transparent' }}
-                inputContainerStyle={{ backgroundColor: '#fff' }}
-                value={search}
-                cancelButtonTitle='Hủy'
-                cancelButtonProps={{ buttonTextStyle: { color: '#fff' } }}
-            />
-        );
-    }
-}
-
-const lstItems = [
-    {
-        Id: 1,
-        customer_Name: "Robert Langdon",
-        customer_Phone: "0987654123",
-    }, {
-        Id: 2,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 3,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 4,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 5,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 6,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 7,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 8,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    }, , {
-        Id: 9,
-        customer_Name: "Timothy Treadwell",
-        customer_Phone: "0123456789",
-    },
-];
-
-export default class EmployerScreenList extends React.Component {
-
-    //static navigationOptions = { headerShown: false }
-
-    state = {
-        searchKeyword: ''
+    constructor(props) {
+        super(props);
+        JWT_TOKEN = this.props.getJWTToken;
     }
 
-    onChangeSearch = (searchKeyword) => {
-        this.setState({ searchKeyword: searchKeyword });
+    state = {
+        lstItems: [],
+        pageSize: 25,
+        pageIndex: 0,
+        remain: 0,
+        isShowLoading: false,
+        refreshing: false,
+    }
+
+    componentDidMount = () => {
+        this._IS_MOUNTED = true;
+        let { pageIndex, pageSize } = this.state;
+        this.getEmployerPaging(pageSize, pageIndex, JWT_TOKEN);
+
+        this.props.navigation.addListener('willFocus', () => {
+            if (typeof this.props.navigation.state.params != "undefined") {
+                let isRefresh = this.props.navigation.state.params.isRefresh;
+                if (isRefresh && this._IS_MOUNTED) {
+                    this.setState({ refreshing: true, pageIndex: 0 }, () => {
+                        this.getEmployerPaging(pageSize, pageIndex, JWT_TOKEN);
+                    })
+                }
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        this._IS_MOUNTED = false;
+    }
+
+    getEmployerPaging = (pageSize, pageIndex, JWT_TOKEN) => {
+        this.setState({ isShowLoading: true });
+        let _this = this;
+        let promise = EmployerRepository.GetAll(pageSize, pageIndex, JWT_TOKEN);
+        promise
+            .then(function (response) {
+                if (_this._IS_MOUNTED == true) {
+                    if (pageIndex > 0) {
+                        let crrList = _this.state.lstItems;
+                        crrList = crrList.concat(response.data.lstEmpl);
+                        _this.setState({
+                            lstItems: crrList,
+                            remain: response.data.remain,
+                        });
+                    }
+                    else {
+                        _this.setState({
+                            lstItems: response.data.lstEmpl,
+                            remain: response.data.remain,
+                        });
+                    }
+                }
+            })
+            .catch(function (e) {
+                alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
+                _this.props.doLogout();
+            })
+            .finally(function () {
+                _this.setState({ isShowLoading: false, refreshing: false });
+            });
+    }
+
+    onRefresh = () => {
+        this.setState({ refreshing: true, pageIndex: 0 }, () => {
+            this.getEmployerPaging(this.state.pageSize, this.state.pageIndex, JWT_TOKEN);
+        });
     }
 
     onGoToAddPage = () => {
-        this.props.navigation.navigate({ routeName: 'EmployerItemAdd' })
+        this.props.navigation.navigate('EmployerItemAdd', { JWT_TOKEN: JWT_TOKEN })
+    }
+
+    viewDetail = (id) => {
+        this.props.navigation.navigate('EmployerItemEdit', { itemId: id, JWT_TOKEN: JWT_TOKEN })
+    }
+
+    renderLoading = (isShowLoading) => {
+        if (isShowLoading) {
+            return (
+                <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#222', opacity: 0.2 }}></View>
+                    <ActivityIndicator style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} size="large" />
+                </View>
+            )
+        }
+    }
+
+    renderViewMoreBtn = (remain) => {
+        if (remain > 0) {
+            let { pageSize, pageIndex, isShowLoading } = this.state;
+            let _this = this;
+            let title = 'Xem thêm ' + remain + ' nhân viên';
+            return (
+                <Button
+                    title={title}
+                    loading={isShowLoading}
+                    containerStyle={{ justifyContent: 'center', alignItems: 'center', marginTop: 15, }}
+                    buttonStyle={{ width: 200 }}
+                    onPress={() => {
+                        this.setState({ pageIndex: pageIndex + 1 }, () => {
+                            _this.getEmployerPaging(this.state.pageSize, this.state.pageIndex, JWT_TOKEN);
+                        });
+                    }}
+                />
+            )
+        }
     }
 
     render() {
+        let { pageIndex, pageSize, lstItems, isShowLoading, refreshing, remain } = this.state;
         return (
             <View style={styles.container}>
-                <EmployerTitle onChangeKW={this.onChangeSearch} onGoToAddPage={this.onGoToAddPage} />
+                <EmployerTitle onGoToAddPage={this.onGoToAddPage} />
 
-                <ScrollView style={{ flex: 1, flexDirection: 'column' }}>
-                    <EmployerItem lstItems={lstItems} />
-                </ScrollView>
+                <View style={{ paddingBottom: 50 }}>
+                    <EmployerItem isRefreshing={refreshing} lstItems={lstItems} viewDetail={this.viewDetail} onRefresh={this.onRefresh} />
+                    {this.renderViewMoreBtn(remain)}
+                </View>
+
                 <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => this.onGoToAddPage()}
@@ -186,12 +190,12 @@ export default class EmployerScreenList extends React.Component {
                         right: 15,
                         bottom: 20,
                     }} >
-
-                    <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[{ width: 50, height: 50, alignItems: 'center', justifyContent: 'center', borderRadius: 25 }, StyleGlobal.boxShadowHeavy]}>
-                        <Ionicons name={'ios-add'} size={25} color='#fff' />
-                    </LinearGradient>
                 </TouchableOpacity>
+
+                {this.renderLoading(isShowLoading)}
             </View>
         );
     }
 }
+
+export default connect(mapStateToProps, null)(EmployerScreenList);

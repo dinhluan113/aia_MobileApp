@@ -10,8 +10,8 @@ const UsersRepository = RepositoryFactory.get('users')
 
 class LoginScreen extends Component {
     state = {
-        email: '',
-        password: '',
+        email: 'demoaccount@gmail.com',
+        password: '1',
         isShowLoading: false,
         isAuthen: false,
     }
@@ -20,7 +20,6 @@ class LoginScreen extends Component {
         try {
             await AsyncStorage.setItem(key, value);
         } catch (e) {
-            console.log(e);
         }
     }
 
@@ -52,7 +51,6 @@ class LoginScreen extends Component {
             })
             .catch(function (e) {
                 alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
-                console.log(e);
             })
             .finally(function () {
                 _this.setState({ isShowLoading: false });
@@ -92,8 +90,7 @@ class LoginScreen extends Component {
                 }}>
                     <TextInput autoCompleteType='username' textContentType='username' keyboardType='email-address' style={styles.inputStyle}
                         placeholder='Email' onChangeText={value => this.setState({ email: value })} value={email}
-                        onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                        returnKeyType='next' />
+                        onSubmitEditing={() => { this.secondTextInput.focus(); }} returnKeyType='next' />
                     <TextInput autoCompleteType='password' secureTextEntry={true} textContentType='password' style={styles.inputStyle} placeholder=' Mật khẩu' onChangeText={value => this.setState({ password: value })} value={password}
                         returnKeyType='done'
                         ref={(input) => { this.secondTextInput = input; }}

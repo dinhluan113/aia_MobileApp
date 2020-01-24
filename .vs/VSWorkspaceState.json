@@ -4,13 +4,11 @@
     "\\src",
     "\\src\\components",
     "\\src\\components\\account",
+    "\\src\\components\\contracts",
     "\\src\\components\\employer",
-    "\\src\\components\\layout",
-    "\\src\\redux",
-    "\\src\\redux\\actions",
-    "\\src\\redux\\reducers",
+    "\\src\\components\\home",
     "\\src\\repositories"
   ],
-  "SelectedNode": "\\src\\components\\home\\home_Navbar.js",
+  "SelectedNode": "\\src\\components\\contracts\\contract_list.js",
   "PreviewInSolutionExplorer": false
 }

@@ -24,11 +24,14 @@ const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 
 const _crrDate = new Date();
 let JWT_TOKEN = '';
-
-class HomeScreenConnect extends React.Component {
+let _IS_MOUNTED = false;
+class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         JWT_TOKEN = this.props.getJWTToken;
+    }
+    componentDidMount = () => {
+        this._IS_MOUNTED = true;
         let date = {
             'Month': _crrDate.getMonth() + 1,
             'Year': _crrDate.getFullYear()
@@ -37,43 +40,52 @@ class HomeScreenConnect extends React.Component {
         this.getCurrentCommit(date.Month, date.Year);
     }
 
+    componentWillUnmount() {
+        this._IS_MOUNTED = false;
+    }
     state = {
         crrCommit: 0,
         crrFYP: 0,
         crrNeedToDo: 0,
+        crrMonth: 0,
+        crrYear: 0,
     }
 
     onChangeDate = (month, year) => {
         this.getCurrentCommit(month, year);
     }
 
-    getCurrentCommit = (month, year) => {
-        let _this = this;
-        let promise = CommitRepository.GetCommitByMonth(month, year, JWT_TOKEN);
-        promise
-            .then(function (response) {
-                let commitValue = 0;
-                let crrFYPValue = 0;
-                let crrNeedToDoValue = 0;
-                if (typeof response.data.crrCommit != 'undefined') {
-                    commitValue = response.data.crrCommit;
-                    crrFYPValue = response.data.fyp;
-                    crrNeedToDoValue = response.data.remain;
-                }
+    getCurrentCommit = async (month, year) => {
+        if (this._IS_MOUNTED) {
+            let _this = this;
+            let promise = CommitRepository.GetCommitByMonth(month, year, JWT_TOKEN);
+            promise
+                .then(function (response) {
+                    let commitValue = 0;
+                    let crrFYPValue = 0;
+                    let crrNeedToDoValue = 0;
+                    if (typeof response.data.crrCommit != 'undefined') {
+                        commitValue = response.data.crrCommit;
+                        crrFYPValue = response.data.fyp;
+                        crrNeedToDoValue = response.data.remain;
+                    }
 
-                _this.setState({
-                    crrCommit: commitValue,
-                    crrFYP: crrFYPValue,
-                    crrNeedToDo: crrNeedToDoValue,
+                    _this.setState({
+                        crrCommit: commitValue,
+                        crrFYP: crrFYPValue,
+                        crrNeedToDo: crrNeedToDoValue,
+                        crrMonth: month,
+                        crrYear: year,
+                    });
+                })
+                .catch(function (e) {
+                    alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
+                    _this.props.doLogout();
+                })
+                .finally(function () {
+
                 });
-            })
-            .catch(function (e) {
-                alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
-                _this.props.doLogout();
-            })
-            .finally(function () {
-
-            });
+        }
     }
 
     renderNavBar = () => (
@@ -82,19 +94,39 @@ class HomeScreenConnect extends React.Component {
         </LinearGradient>
     )
 
+    viewContractDetail = (id) => {
+        this.props.navigation.navigate('ContractItemEdit', { itemId: id })
+    }
+
     renderContent = () => (
-        <HomeContent crrFYP={this.state.crrFYP} crrNeedToDo={this.state.crrNeedToDo} />
+        <HomeContent crrFYP={this.state.crrFYP} JWT_TOKEN={JWT_TOKEN} crrNeedToDo={this.state.crrNeedToDo} viewContractDetail={this.viewContractDetail} />
     )
 
+    onChangeCommit = (value) => {
+        let _this = this;
+        let { crrMonth, crrYear } = this.state;
+        let promise = CommitRepository.ChangeCommitByMonth(value, crrMonth, crrYear, JWT_TOKEN);
+        promise
+            .then(function () {
+                _this.getCurrentCommit(crrMonth, crrYear);
+            })
+            .catch(function (e) {
+                alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
+                console.log(e);
+                //_this.props.doLogout();
+            })
+            .finally(function () {
+            });
+    }
+
     render() {
-        let { crrCommit } = this.state;
         return (
             <View style={styles.container}>
                 <ReactNativeParallaxHeader
                     headerMinHeight={50}
-                    headerMaxHeight={250}
+                    headerMaxHeight={125}
                     extraScrollHeight={0}
-                    title={<HomeNavbar crrCommit={crrCommit} onChangeDate={this.onChangeDate} email={this.props.getCurrentEmail}/>}
+                    title={<HomeNavbar crrCommit={this.state.crrCommit} onChangeCommit={this.onChangeCommit} onChangeDate={this.onChangeDate} email={this.props.getCurrentEmail} />}
                     renderNavBar={this.renderNavBar}
                     renderContent={this.renderContent}
                     alwaysShowTitle={false}
@@ -121,14 +153,14 @@ const mapStateToProps = state => ({
     getCurrentEmail: state.getCurrentEmail
 });
 
-const ConnectedRoot = connect(mapStateToProps, actions)(HomeScreenConnect);
+export default connect(mapStateToProps, actions)(HomeScreen);
 
-export default class HomeScreen extends React.Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <ConnectedRoot />
-            </Provider>
-        );
-    }
-}
+//export default class HomeScreen extends React.Component {
+//    render() {
+//        return (
+//            <Provider store={store}>
+//                <ConnectedRoot />
+//            </Provider>
+//        );
+//    }
+//}

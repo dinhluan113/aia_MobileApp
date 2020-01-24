@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, TextInput, Image, ScrollView, Dimensions, Picker, ActivityIndicator } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View, TextInput, Image, ScrollView, Dimensions, Picker, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // 6.2.2
 import { TextInputMask } from 'react-native-masked-text'
 import ListImages from '../../../assets/images.js';
@@ -43,24 +43,7 @@ const styles = StyleSheet.create({
 });
 
 let JWT_TOKEN = '';
-class ContractItemAdd extends React.Component {
-    componentDidMount = () => {
-        JWT_TOKEN = this.props.getJWTToken;
-        this.setState({ isShowLoading: true });
-        let _this = this;
-        let promise = EmployerRepository.GetAll(1000, 0, JWT_TOKEN);
-        promise
-            .then(function (response) {
-                _this.setState({ lstEmployer: response.data.lstEmpl });
-            })
-            .catch(function (e) {
-                alert("Không thể tải danh sách nhân viên. Vui lòng thử lại sau.");
-            })
-            .finally(function () {
-                _this.setState({ isShowLoading: false });
-            });
-    }
-
+class ContractItemEdit extends React.Component {
     state = {
         objModel: {
             Id: 0,
@@ -78,6 +61,47 @@ class ContractItemAdd extends React.Component {
         lstEmployer: [],
         showDatePicker: false,
         isShowLoading: false,
+    }
+
+    componentDidMount = () => {
+        JWT_TOKEN = this.props.getJWTToken;
+        this.setState({ isShowLoading: true });
+        let _this = this;
+        ContractRepository.GetById(this.props.navigation.state.params.itemId, JWT_TOKEN)
+            .then((response) => {
+                let model = response.data;
+                this.setObject(model);
+            })
+            .then(() => {
+                EmployerRepository.GetAll(1000, 0, JWT_TOKEN)
+                    .then(function (response) {
+                        _this.setState({ lstEmployer: response.data.lstEmpl });
+                    })
+                    .catch(function (e) {
+                        alert("Không thể tải danh sách nhân viên. Vui lòng thử lại sau.");
+                    })
+            })
+            .catch(function (e) {
+                alert("Không thể tải thông tin hợp đồng. Vui lòng thử lại sau.");
+            })
+            .finally(function () {
+                _this.setState({ isShowLoading: false });
+            });
+    }
+
+    setObject = (obj) => {
+        this.setState(Object.assign(
+            this.state.objModel, {
+            Id: obj.id,
+            ContractId: obj.contractId,
+            Nfyp: obj.nfyp,
+            Rfyp: obj.rfyp,
+            PhiTruot: obj.phiTruot,
+            Customer_Name: obj.customer_Name,
+            Customer_Phone: obj.customer_Phone,
+            EmployerId: obj.employerId,
+            DateCreated: new Date(obj.dateCreated),
+        }));
     }
 
     setContractId = (value) => { this.setState(Object.assign(this.state.objModel, { ContractId: value })); }
@@ -112,9 +136,10 @@ class ContractItemAdd extends React.Component {
     addDTO = () => {
         this.setState({ isShowLoading: true });
         let _this = this;
-        let promise = ContractRepository.Add(this.state.objModel, JWT_TOKEN);
+        let promise = ContractRepository.Update(this.state.objModel, JWT_TOKEN);
         promise
             .then(function (response) {
+                alert("Đã lưu thông tin thành công.");
                 _this.props.navigation.navigate('ContractScreenList', { isRefresh: true })
             })
             .catch(function (e) {
@@ -136,6 +161,34 @@ class ContractItemAdd extends React.Component {
             )
         }
     }
+    onDelete = () => {
+        Alert.alert(
+            'Xác nhận',
+            'Bạn có chắc chắn muốn xóa hợp đồng "' + this.state.ContractId + '" không?',
+            [
+                { text: 'Hủy', style: 'cancel', },
+                {
+                    text: 'Xóa', onPress: () => {
+                        this.setState({ isShowLoading: true });
+                        let _this = this;
+                        let promise = ContractRepository.Delete(this.state.objModel.Id, JWT_TOKEN);
+                        promise
+                            .then(function (response) {
+                                alert("Đã xóa thành công.");
+                                _this.props.navigation.navigate('ContractScreenList', { isRefresh: true })
+                            })
+                            .catch(function (e) {
+                                alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
+                            })
+                            .finally(function () {
+                                _this.setState({ isShowLoading: false });
+                            });
+                    }
+                },
+            ],
+            { cancelable: true },
+        );
+    }
 
     render() {
         let { objModel, showDatePicker, lstEmployer, isShowLoading } = this.state;
@@ -150,19 +203,19 @@ class ContractItemAdd extends React.Component {
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>Mã hợp đồng</Text>
                         <TextInput placeholder='Mã hợp đồng' onChangeText={value => this.setContractId(value)}
-                            value={objModel.ContractId} />
+                            value={this.state.objModel.ContractId} />
                     </View>
                 </View>
                 <View style={[styles.frmInput, { flexDirection: 'row' }]}>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>NFYP</Text>
                         <TextInputMask type={'money'} options={inputOption}
-                            value={objModel.Nfyp} onChangeText={value => { this.setNfyp(value) }} />
+                            value={this.state.objModel.Nfyp} onChangeText={value => { this.setNfyp(value) }} />
                     </View>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>RFYP</Text>
                         <TextInputMask type={'money'} options={inputOption}
-                            value={objModel.Rfyp} onChangeText={value => { this.setRfyp(value) }} />
+                            value={this.state.objModel.Rfyp} onChangeText={value => { this.setRfyp(value) }} />
                     </View>
                 </View>
 
@@ -170,15 +223,15 @@ class ContractItemAdd extends React.Component {
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>Phí trượt</Text>
                         <TextInputMask type={'money'} options={inputOption}
-                            value={objModel.PhiTruot} onChangeText={value => { this.setPhiTruot(value) }} />
+                            value={this.state.objModel.PhiTruot} onChangeText={value => { this.setPhiTruot(value) }} />
                     </View>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>Ngày tạo hợp đồng</Text>
                         <TouchableOpacity onPress={this.showDatePopup}>
-                            <Text>{this.getFormatedDate(objModel.DateCreated)}</Text>
+                            <Text>{this.getFormatedDate(this.state.objModel.DateCreated)}</Text>
                         </TouchableOpacity>
 
-                        {showDatePicker && <DateTimePicker value={objModel.DateCreated}
+                        {showDatePicker && <DateTimePicker value={this.state.objModel.DateCreated}
                             mode='date'
                             is24Hour={true}
                             display="default"
@@ -191,19 +244,19 @@ class ContractItemAdd extends React.Component {
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>Tên khách hàng</Text>
                         <TextInput autoCapitalize='words' placeholder='Tên khách hàng' onChangeText={value => this.setCusName(value)}
-                            value={objModel.Customer_Name} />
+                            value={this.state.objModel.Customer_Name} />
                     </View>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>Số điện thoại</Text>
                         <TextInput keyboardType='phone-pad' placeholder='Số điện thoại khách hàng' onChangeText={value => this.setCusPhone(value)}
-                            value={objModel.Customer_Phone} />
+                            value={this.state.objModel.Customer_Phone} />
                     </View>
                 </View>
 
                 <View style={[styles.frmInput, { flexDirection: 'row' }]}>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>Nhân viên</Text>
-                        <Picker style={{ flex: 1 }} selectedValue={objModel.EmployerId}
+                        <Picker style={{ flex: 1 }} selectedValue={this.state.objModel.EmployerId}
                             onValueChange={(itemValue, itemIndex) => this.setEmployerId(itemValue, itemIndex)} >
                             {this.renderEmployerItems(lstEmployer)}
                         </Picker>
@@ -216,6 +269,15 @@ class ContractItemAdd extends React.Component {
                     title="Lưu"
                     onPress={this.addDTO}
                 />
+
+                <Button
+                    containerStyle={{ justifyContent: 'center', borderTopWidth: 1, borderTopColor: '#e1e1e1', paddingTop: 15, alignItems: 'center', marginTop: 15, marginBottom: 15, }}
+                    type="clear"
+                    buttonStyle={{ width: 200 }}
+                    titleStyle={{ color: 'red' }}
+                    title="Xóa hợp đồng"
+                    onPress={this.onDelete}
+                />
                 {this.renderLoading(isShowLoading)}
             </KeyboardAwareScrollView>
         )
@@ -226,4 +288,4 @@ const mapStateToProps = state => ({
     getJWTToken: state.getJWTToken,
 });
 
-export default connect(mapStateToProps, null)(ContractItemAdd);
+export default connect(mapStateToProps, null)(ContractItemEdit);

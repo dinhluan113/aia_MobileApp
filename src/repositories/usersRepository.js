@@ -2,10 +2,10 @@ import Repository from "./Repository";
 
 const resource = "/aiausers";
 export default {
-    get(id) {
+    get(id, token) {
         return Repository.get(`${resource}/${id}`, {
             'headers': {
-                Authorization: 'Bearer ' + localStorage.getItem('jwtv2')
+                Authorization: 'Bearer ' + token
             },
             crossDomain: true
         });

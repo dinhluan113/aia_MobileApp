@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "R4R",
-    "slug": "R4R",
+    "name": "SSContract",
+    "slug": "SSContract",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -24,7 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,	  
+      "bundleIdentifier": "com.adm.SSContract"
+    },
+    "android": {
+      "package": "com.adm.SSContract"
     }
   }
 }

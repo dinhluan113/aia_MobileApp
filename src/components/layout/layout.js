@@ -13,9 +13,11 @@ import HomeScreen from '../home/home.js';
 
 import EmployerScreenList from '../employer/employer_list.js';
 import EmployerItemAdd from '../employer/employer_add.js';
+import EmployerItemEdit from '../employer/employer_edit.js';
 
 import ContractScreenList from '../contracts/contract_list.js';
 import ContractItemAdd from '../contracts/contract_add.js';
+import ContractItemEdit from '../contracts/contract_edit.js';
 
 import SettingsScreen from '../setting/setting.js';
 
@@ -43,7 +45,13 @@ const ContractStack = createStackNavigator(
         ContractItemAdd: {
             screen: ContractItemAdd,
             navigationOptions: ({ navigation }) => ({
-                title: 'Thêm nhân viên mới',
+                title: 'Thêm hợp đồng mới',
+            }),
+        },
+        ContractItemEdit: {
+            screen: ContractItemEdit,
+            navigationOptions: ({ navigation }) => ({
+                title: 'Chỉnh sửa hợp đồng',
             }),
         },
     },
@@ -54,10 +62,10 @@ const ContractStack = createStackNavigator(
 
 ContractStack.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
+    let isRefresh = false;
     let routeName = navigation.state.routes[navigation.state.index].routeName
-    if (routeName == 'ContractItemAdd') {
-        tabBarVisible = false
-    }
+    if (routeName != 'ContractScreenList')
+        tabBarVisible = false;
     return {
         tabBarVisible,
     }
@@ -74,28 +82,47 @@ const EmployerStack = createStackNavigator(
                 title: 'Thêm nhân viên mới',
             }),
         },
+        EmployerItemEdit: {
+            screen: EmployerItemEdit,
+            navigationOptions: ({ navigation }) => ({
+                title: 'Chỉnh sửa nhân viên',
+            }),
+        },
     },
     {
         initialRouteName: 'EmployerScreenList',
     }
 );
 
-EmployerStack.navigationOptions = ({ navigation }) => {
+
+// HOME //
+const HomeStack = createStackNavigator(
+    {
+        Home: { screen: HomeScreen, navigationOptions: { headerShown: false } },
+        ContractItemEdit: {
+            screen: ContractItemEdit,
+            navigationOptions: ({ navigation }) => ({
+                title: 'Chỉnh sửa hợp đồng',
+            }),
+        },
+    },
+);
+
+HomeStack.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     let routeName = navigation.state.routes[navigation.state.index].routeName
-    if (routeName == 'EmployerItemAdd') {
-        tabBarVisible = false
-    }
+    if (routeName != 'Home')
+        tabBarVisible = false;
     return {
         tabBarVisible,
     }
 }
-// END EMPLOYER //
+// END HOME //
 
 const TabNavigator = createBottomTabNavigator(
     {
         Home: {
-            screen: HomeScreen,
+            screen: HomeStack,
             navigationOptions: {
                 title: 'Trang chủ',
             },

@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, TextInput } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View, TextInput, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
 
@@ -21,34 +21,53 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection: 'row',
         borderLeftColor: '#012456',
-        borderLeftWidth: 2, 
+        borderLeftWidth: 2,
     },
 });
+
+
+function wait(timeout) {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
 
 export default class ContractItem extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    renderItems() {
-        if (this.props.lstItems != null) {
-            return this.props.lstItems.map((item) => {
-                return (
-                    <TouchableOpacity style={styles.boxActivity} activeOpacity={.5} key={item.Id}>
+    viewContractDetail = id => {
+        this.props.viewContractDetail(id);
+    }
+
+    onRefresh = () => {
+        this.props.onRefresh();
+    };
+
+    render() {
+        return (
+            <FlatList
+                data={this.props.lstItems}
+                onRefresh={this.onRefresh}
+                refreshing={this.props.isRefreshing}
+                renderItem={({ item }) =>
+                    <TouchableOpacity style={styles.boxActivity} activeOpacity={.5} onPress={() => { this.viewContractDetail(item.id) }}>
                         <View style={{ flex: 1 }}>
-                            <View>
-                                <Text>{item.customer_Name}</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ flex: 1 }}>{item.contractId}</Text>
+                                <Text style={{ flex: 1, textAlign: 'right', color: '#8f94a2', fontSize: 12 }}>{item.dateCreated}</Text>
                             </View>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={{ flex: 1, flexDirection: 'column', paddingRight: 5 }}>
-                                    <Text style={{ color: '#8f94a2', fontSize: 12 }}>Ngày tạo</Text>
-                                    <Text style={{ color: '#333', fontSize: 13 }}>{item.dateCreated}</Text>
+                                    <Text style={{ color: '#8f94a2', fontSize: 12 }}>Khách hàng</Text>
+                                    <Text style={{ color: '#333', fontSize: 13 }}>{item.customer_Name}</Text>
                                 </View>
-                                <View style={{ flex: 2, flexDirection: 'column', paddingRight: 5 }}>
+                                <View style={{ flex: 1, flexDirection: 'column', paddingRight: 5 }}>
                                     <Text style={{ color: '#8f94a2', fontSize: 12 }}>Nhân viên</Text>
                                     <Text style={{ color: '#333', fontSize: 13 }}>{item.userName}</Text>
                                 </View>
-                                <View style={{ flex: 1, flexDirection: 'column', minWidth: 19 }}>
+                                <View style={{ flex: 1, flexDirection: 'column' }}>
                                     <Text style={{ color: '#8f94a2', fontSize: 12, textAlign: 'right' }}>NFYP</Text>
                                     <NumberFormat
                                         value={item.nfyp}
@@ -61,18 +80,9 @@ export default class ContractItem extends React.Component {
                             </View>
                         </View>
                     </TouchableOpacity>
-                );
-            });
-        }
-    }
-
-    render() {
-        return (
-            <View>
-                {
-                    this.renderItems()
                 }
-            </View>
+                keyExtractor={item => item.id.toString()}
+            />
         )
     }
 }
