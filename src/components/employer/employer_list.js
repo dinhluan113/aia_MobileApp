@@ -139,17 +139,6 @@ class EmployerScreenList extends React.Component {
         this.props.navigation.navigate('EmployerItemEdit', { itemId: id, JWT_TOKEN: JWT_TOKEN })
     }
 
-    renderLoading = (isShowLoading) => {
-        if (isShowLoading) {
-            return (
-                <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#222', opacity: 0.2 }}></View>
-                    <ActivityIndicator style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} size="large" />
-                </View>
-            )
-        }
-    }
-
     renderViewMoreBtn = (remain) => {
         if (remain > 0) {
             let { pageSize, pageIndex, isShowLoading } = this.state;
@@ -172,7 +161,7 @@ class EmployerScreenList extends React.Component {
     }
 
     render() {
-        let { pageIndex, pageSize, lstItems, isShowLoading, refreshing, remain } = this.state;
+        let { pageIndex, pageSize, lstItems, refreshing, remain } = this.state;
         return (
             <View style={styles.container}>
                 <EmployerTitle onGoToAddPage={this.onGoToAddPage} />
@@ -191,8 +180,6 @@ class EmployerScreenList extends React.Component {
                         bottom: 20,
                     }} >
                 </TouchableOpacity>
-
-                {this.renderLoading(isShowLoading)}
             </View>
         );
     }

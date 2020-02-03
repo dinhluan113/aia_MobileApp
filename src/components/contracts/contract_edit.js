@@ -70,6 +70,11 @@ class ContractItemEdit extends React.Component {
         ContractRepository.GetById(this.props.navigation.state.params.itemId, JWT_TOKEN)
             .then((response) => {
                 let model = response.data;
+                if (model == "" || model.contractId == "") {
+                    alert("Không thể tải thông tin hợp đồng. Vui lòng thử lại sau hoặc làm mới danh sách.");
+                    _this.props.navigation.goBack();
+                }
+
                 this.setObject(model);
             })
             .then(() => {
@@ -140,7 +145,7 @@ class ContractItemEdit extends React.Component {
         promise
             .then(function (response) {
                 alert("Đã lưu thông tin thành công.");
-                _this.props.navigation.navigate('ContractScreenList', { isRefresh: true })
+                //_this.props.navigation.navigate('ContractScreenList', { isRefresh: true })
             })
             .catch(function (e) {
                 alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
@@ -175,7 +180,8 @@ class ContractItemEdit extends React.Component {
                         promise
                             .then(function (response) {
                                 alert("Đã xóa thành công.");
-                                _this.props.navigation.navigate('ContractScreenList', { isRefresh: true })
+                                _this.props.navigation.goBack(null);
+                                setTimeout(() => _this.props.navigation.setParams({ isRefresh: true  }), 10)
                             })
                             .catch(function (e) {
                                 alert("Đã có lỗi xảy ra vui lòng thử lại sau.");

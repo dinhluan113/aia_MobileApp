@@ -45,7 +45,7 @@ export default class EmployerItemEdit extends React.Component {
             let _this = this;
             EmployerRepository.GetById(this.props.navigation.state.params.itemId, JWT_TOKEN)
                 .then((response) => {
-                    let model = response.data;
+                    let model = response.data;                    
                     this.setObject(model);
                 })
                 .catch(function (e) {

@@ -144,7 +144,7 @@ class ContractScreenList extends React.Component {
     state = {
         searchKeyword: '',
         lstItems: [],
-        pageSize: 25,
+        pageSize: 35,
         pageIndex: 0,
         remain: 0,
         isShowLoading: false,
@@ -158,9 +158,12 @@ class ContractScreenList extends React.Component {
 
         this.props.navigation.addListener('willFocus', () => {
             if (this._IS_MOUNTED) {
-                this.setState({ refreshing: true, pageIndex: 0 }, () => {
-                    this.getContractPaging(pageSize, pageIndex, JWT_TOKEN);
-                })
+                //let isRefresh = this.props.navigation.getParam('isRefresh', false);
+                //if (isRefresh) {
+                    this.setState({ refreshing: true }, () => {
+                        this.getContractPaging(pageSize, pageIndex, JWT_TOKEN);
+                    })
+                //}
             }
         })
     }
@@ -256,13 +259,8 @@ class ContractScreenList extends React.Component {
         }
     }
 
-
-    //            <ScrollView style={{ flex: 1, flexDirection: 'column', paddingLeft: 10, paddingRight: 10 }}
-    //refreshControl={
-    //    <RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />
-    //}>
     render() {
-        let { pageIndex, pageSize, lstItems, isShowLoading, refreshing, remain, searchKeyword } = this.state;
+        let { pageIndex, pageSize, lstItems, refreshing, remain, searchKeyword } = this.state;
         return (
             <View style={styles.container}>
                 <ContractTitle searchKeyword={searchKeyword} onChangeKW={this.onChangeSearch} onGoToAddPage={this.onGoToAddPage} />
@@ -285,8 +283,6 @@ class ContractScreenList extends React.Component {
                         <Ionicons name={'ios-add'} size={25} color='#fff' />
                     </LinearGradient>*/}
                 </TouchableOpacity>
-
-                {this.renderLoading(isShowLoading)}
             </View>
         );
     }

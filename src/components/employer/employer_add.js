@@ -40,8 +40,8 @@ export default class EmployertItemAdd extends React.Component {
     }
 
     setName = (value) => { this.setState(Object.assign(this.state.objModel, { name: value })); }
-    setPhone = (value) => { this.setState(Object.assign(this.state.objModel, { phone: value.split(".").join("") })); }
-    setEmail = (value) => { this.setState(Object.assign(this.state.objModel, { email: value.split(".").join("") })); }
+    setPhone = (value) => { this.setState(Object.assign(this.state.objModel, { phone: value })); }
+    setEmail = (value) => { this.setState(Object.assign(this.state.objModel, { email: value })); }
 
     addDTO = () => {
         this.setState({ isShowLoading: true });

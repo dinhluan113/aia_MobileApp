@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { View, Text, StyleSheet, Image, StatusBar, Dimensions, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, StatusBar, Dimensions, Alert, TouchableOpacity, AsyncStorage } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import ListImages from '../../../assets/images.js';
 import * as actions from '../../redux/actions';
@@ -42,19 +42,32 @@ class SettingScreen extends React.Component {
         JWT_TOKEN = this.props.getJWTToken;
     }
 
+    _retrieveData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('userid');
+            if (value !== null) {
+                return value;
+            }
+        } catch (error) {
+        }
+    };
+
     componentDidMount = () => {
         this._IS_MOUNTED = true;
         let _this = this;
-        UserRepository.get(15, JWT_TOKEN)
-            .then((response) => {
-                let model = response.data;
-                this.setObject(model);
-            })
-            .catch(function (e) {
-                alert("Không thể tải thông tin. Vui lòng thử lại sau.");
-            })
-            .finally(function () {
-            });
+        let propmisData = this._retrieveData();
+        propmisData.then(value => {
+            UserRepository.get(value, JWT_TOKEN)
+                .then((response) => {
+                    let model = response.data;
+                    this.setObject(model);
+                })
+                .catch(function (e) {
+                    alert("Không thể tải thông tin. Vui lòng thử lại sau.");
+                })
+                .finally(function () {
+                });
+        })
     }
 
     componentWillUnmount() {
@@ -82,9 +95,7 @@ class SettingScreen extends React.Component {
                 "totalEmployer": obj.totalEmployer,
                 "totalContracts": obj.totalContracts,
                 "avatar": ""
-            }), () => {
-                console.log(this.state.objModel);
-            });
+            }));
         }
     }
 

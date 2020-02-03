@@ -41,7 +41,7 @@ const IOS_MODAL_ROUTES = ['OptionsScreen'];
 // CONTRACT //
 const ContractStack = createStackNavigator(
     {
-        ContractScreenList: { screen: ContractScreenList, navigationOptions: { headerShown: false } },
+        ContractScreenList: { screen: ContractScreenList, navigationOptions: { headerShown: false }, params: { isRefresh: false } },
         ContractItemAdd: {
             screen: ContractItemAdd,
             navigationOptions: ({ navigation }) => ({
@@ -62,7 +62,6 @@ const ContractStack = createStackNavigator(
 
 ContractStack.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
-    let isRefresh = false;
     let routeName = navigation.state.routes[navigation.state.index].routeName
     if (routeName != 'ContractScreenList')
         tabBarVisible = false;
@@ -93,6 +92,16 @@ const EmployerStack = createStackNavigator(
         initialRouteName: 'EmployerScreenList',
     }
 );
+
+EmployerStack.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true;
+    let routeName = navigation.state.routes[navigation.state.index].routeName
+    if (routeName != 'EmployerScreenList')
+        tabBarVisible = false;
+    return {
+        tabBarVisible,
+    }
+}
 
 
 // HOME //
@@ -139,7 +148,12 @@ const TabNavigator = createBottomTabNavigator(
                 title: 'Nhân viên',
             },
         },
-        Settings: SettingsScreen,
+        Settings: {
+            screen: SettingsScreen,
+            navigationOptions: {
+                title: 'Tài khoản',
+            },
+        },
     },
     {
         defaultNavigationOptions: ({ navigation }) => ({

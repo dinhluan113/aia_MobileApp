@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, Image, Dimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { Provider, connect } from 'react-redux';
 import store from '../../redux/store/index.js';
@@ -30,14 +31,21 @@ class HomeScreen extends React.Component {
         super(props);
         JWT_TOKEN = this.props.getJWTToken;
     }
-    componentDidMount = () => {
+    componentDidMount = async () => {
         this._IS_MOUNTED = true;
         let date = {
             'Month': _crrDate.getMonth() + 1,
             'Year': _crrDate.getFullYear()
         };
         this.props.doSetcrrDate(date);
-        this.getCurrentCommit(date.Month, date.Year);
+        this.setState({ crrMonth: date.Month, crrYear: date.Year }, () => {
+            this.props.navigation.addListener('willFocus', async () => {
+                if (this._IS_MOUNTED) {
+                    await this.getCurrentCommit(this.state.crrMonth, this.state.crrYear);
+                }
+            })
+        })
+        //await this.getCurrentCommit(date.Month, date.Year);
     }
 
     componentWillUnmount() {
@@ -98,9 +106,12 @@ class HomeScreen extends React.Component {
         this.props.navigation.navigate('ContractItemEdit', { itemId: id })
     }
 
-    renderContent = () => (
-        <HomeContent crrFYP={this.state.crrFYP} JWT_TOKEN={JWT_TOKEN} crrNeedToDo={this.state.crrNeedToDo} viewContractDetail={this.viewContractDetail} />
-    )
+    renderContent = () => {
+        let { crrMonth, crrYear } = this.state;
+        return (
+            <HomeContent crrFYP={this.state.crrFYP} JWT_TOKEN={JWT_TOKEN} crrNeedToDo={this.state.crrNeedToDo} viewContractDetail={this.viewContractDetail} />
+        )
+    }
 
     onChangeCommit = (value) => {
         let _this = this;

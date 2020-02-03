@@ -1,14 +1,16 @@
 {
   "ExpandedNodes": [
     "",
+    "\\assets",
+    "\\assets\\imgs",
     "\\src",
     "\\src\\components",
-    "\\src\\components\\account",
-    "\\src\\components\\contracts",
     "\\src\\components\\employer",
     "\\src\\components\\home",
+    "\\src\\components\\layout",
+    "\\src\\components\\setting",
     "\\src\\repositories"
   ],
-  "SelectedNode": "\\src\\components\\contracts\\contract_list.js",
+  "SelectedNode": "\\src\\components\\account\\login.js",
   "PreviewInSolutionExplorer": false
 }
