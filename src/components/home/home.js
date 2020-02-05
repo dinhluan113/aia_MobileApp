@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, Image, Dimensions, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Provider, connect } from 'react-redux';
@@ -132,7 +132,7 @@ class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <ReactNativeParallaxHeader
                     headerMinHeight={50}
                     headerMaxHeight={125}
@@ -147,7 +147,7 @@ class HomeScreen extends React.Component {
                         onScrollEndDrag: () => { },
                     }}
                 />
-            </View>
+            </SafeAreaView>
         );
     }
 }

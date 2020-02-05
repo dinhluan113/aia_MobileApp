@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { View, Text, StyleSheet, Image, StatusBar, Dimensions, Alert, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, Image, StatusBar, Dimensions, Alert, TouchableOpacity, AsyncStorage, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import ListImages from '../../../assets/images.js';
 import * as actions from '../../redux/actions';
@@ -12,7 +12,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     topHeader: {
-        paddingTop: StatusBar.currentHeight + 20,
+        paddingTop: StatusBar.currentHeight,
         minHeight: 195,
         borderBottomLeftRadius: 35,
         borderBottomRightRadius: 35,
@@ -118,7 +118,7 @@ class SettingScreen extends React.Component {
     render() {
         let { objModel } = this.state;
         return (
-            <View style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT, backgroundColor: '#f0f9ff' }}>
+            <SafeAreaView style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT, backgroundColor: '#f0f9ff' }}>
                 <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.topHeader}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ backgroundColor: '#fff', borderRadius: 110 / 2 }}>
@@ -143,7 +143,7 @@ class SettingScreen extends React.Component {
                         <Text>Đăng xuất</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }

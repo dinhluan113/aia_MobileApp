@@ -24,8 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,	  
-      "bundleIdentifier": "com.adm.SSContract"
+      "supportsTablet": true,
+      "bundleIdentifier": "com.adm.SSContract",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login"
+      }
     },
     "android": {
       "package": "com.adm.SSContract"

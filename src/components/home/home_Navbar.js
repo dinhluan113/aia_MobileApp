@@ -34,7 +34,7 @@ export default class HomeNavbar extends React.Component {
 
 const styles = StyleSheet.create({
     topHeader: {
-        paddingTop: StatusBar.currentHeight + 20,
+        paddingTop: StatusBar.currentHeight,
         minHeight: 125,
         borderBottomLeftRadius: 35,
         borderBottomRightRadius: 35,

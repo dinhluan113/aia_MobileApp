@@ -262,7 +262,7 @@ class ContractItemEdit extends React.Component {
                 <View style={[styles.frmInput, { flexDirection: 'row' }]}>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.lblInput}>Nhân viên</Text>
-                        <Picker style={{ flex: 1 }} selectedValue={this.state.objModel.EmployerId}
+                        <Picker style={{ flex: 1, height: 55 }} itemStyle={{ height: 55 }} selectedValue={this.state.objModel.EmployerId}
                             onValueChange={(itemValue, itemIndex) => this.setEmployerId(itemValue, itemIndex)} >
                             {this.renderEmployerItems(lstEmployer)}
                         </Picker>

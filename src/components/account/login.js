@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Image, StatusBar, TextInput, Button, ActivityIndicator, AsyncStorage, Modal, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Image, StatusBar, TextInput, Button, ActivityIndicator, AsyncStorage, Modal, Platform, SafeAreaView } from 'react-native';
 import base64 from 'react-native-base64'
 import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
@@ -164,107 +164,109 @@ class LoginScreen extends Component {
     }
 
     renderLogin = (email, password, isShowLoading) => (
-        <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            contentContainerStyle={{ flexGrow: 1 }}
-            enableOnAndroid={true}
-            extraHeight={100}
-            style={styles.mainContainer}
-            scrollEnabled={false}
-        >
-            <View style={[styles.mainContainer, styles.containerChild]}>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.title} >Your Contracts.<Text style={styles.titlePrimary}> Greener.</Text></Text>
-                    <Text style={styles.subTitle}>Quản lý thông tin hợp đồng</Text>
-                    <Image style={styles.logoIcon} source={Images.IconLogo} />
-                </View>
-                <View style={{
-                    width: ScreenWidth,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <TextInput autoCompleteType='username' textContentType='username' keyboardType='email-address' style={styles.inputStyle}
-                        placeholder='Email' onChangeText={value => this.setState({ email: value })} value={email} autoCapitalize='none'
-                        onSubmitEditing={() => { this.secondTextInput.focus(); }} returnKeyType='next' />
-                    <TextInput autoCompleteType='password' secureTextEntry={true} textContentType='password' style={styles.inputStyle} placeholder=' Mật khẩu' onChangeText={value => this.setState({ password: value })} value={password}
-                        returnKeyType='done'
-                        ref={(input) => { this.secondTextInput = input; }}
-                        onSubmitEditing={this.handleLogin}
-                    />
-
-                    <TouchableOpacity onPress={this.handleLogin} activeOpacity={0.7}>
-                        <LinearGradient colors={['#29d990', '#0ac5b8']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{
-                            alignItems: 'center', padding: 10, borderRadius: 4, width: ScreenWidth - 59, borderRadius: 50, marginTop: 10
-                        }}>
-                            <Text style={{ color: '#fff' }}>Đăng nhập</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-
-                    <View style={{ margin: 10 }}>
-                        <View style={{ alignSelf: 'center', position: 'absolute', borderBottomColor: '#777', borderBottomWidth: 1, height: '50%', width: '90%', maxWidth: 280 }} />
-                        <Text style={{ alignSelf: 'center', paddingHorizontal: 5, backgroundColor: '#ebeef0', fontSize: 12, color: '#777' }}>Hoặc</Text>
+        <SafeAreaView style={{ height: ScreenHeight }}>
+            <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                contentContainerStyle={{ flexGrow: 1 }}
+                enableOnAndroid={true}
+                extraHeight={100}
+                style={styles.mainContainer}
+                scrollEnabled={false}
+            >
+                <View style={styles.containerChild}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.title} >Your Contracts.<Text style={styles.titlePrimary}> Greener.</Text></Text>
+                        <Text style={styles.subTitle}>Quản lý thông tin hợp đồng</Text>
+                        <Image style={styles.logoIcon} source={Images.IconLogo} />
                     </View>
-
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (this.state.isCanFingerPrint) {
-                                if (Platform.OS === 'android') {
-                                    this.setModalVisible(!this.state.modalVisible);
-                                } else {
-                                    this.scanFingerPrint();
-                                }
-                            }
-                            else {
-                                alert("Bạn cần đăng nhập bằng mật khẩu trước khi sử dụng tính năng này");
-                            }
-                        }}
-                        style={!this.state.isCanFingerPrint ? { opacity: 0.5, alignItems: 'center' } : { opacity: 1, alignItems: 'center' }}
-                        //disabled={!this.state.isCanFingerPrint}
-                    >
-                        <Image
-                            style={{ width: 36, height: 36 }}
-                            source={require('../../../assets/imgs/fingerprint.png')}
+                    <View style={{
+                        width: ScreenWidth,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <TextInput autoCompleteType='username' textContentType='username' keyboardType='email-address' style={styles.inputStyle}
+                            placeholder='Email' onChangeText={value => this.setState({ email: value })} value={email} autoCapitalize='none'
+                            onSubmitEditing={() => { this.secondTextInput.focus(); }} returnKeyType='next' />
+                        <TextInput autoCompleteType='password' secureTextEntry={true} textContentType='password' style={styles.inputStyle} placeholder=' Mật khẩu' onChangeText={value => this.setState({ password: value })} value={password}
+                            returnKeyType='done'
+                            ref={(input) => { this.secondTextInput = input; }}
+                            onSubmitEditing={this.handleLogin}
                         />
-                        <Text>
-                            Đăng nhập bằng vân tay
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
 
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={this.state.isCanFingerPrint && this.state.modalVisible}
-                onShow={this.scanFingerPrint}>
-                <View style={styles.modal}>
-                    <View style={styles.modalContainer}>
-                        <Image
-                            style={{ width: 64, height: 64 }}
-                            source={require('../../../assets/imgs/fingerprint.png')}
-                        />
-                        <Text style={{ color: '#666', fontWeight: '700', marginBottom: 10 }}>Fingerprint for "SSContract"</Text>
-                        <Text style={{ color: '#666' }}>Sử dụng Vân tay để mở khóa</Text>
+                        <TouchableOpacity onPress={this.handleLogin} activeOpacity={0.7}>
+                            <LinearGradient colors={['#29d990', '#0ac5b8']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{
+                                alignItems: 'center', padding: 10, borderRadius: 4, width: ScreenWidth - 59, borderRadius: 50, marginTop: 10
+                            }}>
+                                <Text style={{ color: '#fff' }}>Đăng nhập</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+
+                        <View style={{ margin: 10 }}>
+                            <View style={{ alignSelf: 'center', position: 'absolute', borderBottomColor: '#777', borderBottomWidth: 1, height: '50%', width: '90%', maxWidth: 280 }} />
+                            <Text style={{ alignSelf: 'center', paddingHorizontal: 5, backgroundColor: '#ebeef0', fontSize: 12, color: '#777' }}>Hoặc</Text>
+                        </View>
+
                         <TouchableOpacity
-                            onPress={async () => {
-                                LocalAuthentication.cancelAuthenticate();
-                                this.setModalVisible(!this.state.modalVisible);
+                            onPress={() => {
+                                if (this.state.isCanFingerPrint) {
+                                    if (Platform.OS === 'android') {
+                                        this.setModalVisible(!this.state.modalVisible);
+                                    } else {
+                                        this.scanFingerPrint();
+                                    }
+                                }
+                                else {
+                                    alert("Bạn cần đăng nhập bằng mật khẩu trước khi sử dụng tính năng này");
+                                }
                             }}
-                            style={{ borderTopWidth: 1, borderTopColor: '#f5f5f5', width: 320, textAlign: 'center', padding: 10, alignItems: 'center', marginTop: 15 }}
+                            style={!this.state.isCanFingerPrint ? { opacity: 0.5, alignItems: 'center' } : { opacity: 1, alignItems: 'center' }}
+                        //disabled={!this.state.isCanFingerPrint}
                         >
-                            <Text style={{ color: 'red', fontSize: 16 }}>Hủy</Text>
+                            <Image
+                                style={{ width: 36, height: 36 }}
+                                source={require('../../../assets/imgs/fingerprint.png')}
+                            />
+                            <Text>
+                                Đăng nhập bằng vân tay
+                        </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-            </Modal>
 
-            {this.renderLoading(isShowLoading)}
-        </KeyboardAwareScrollView>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.isCanFingerPrint && this.state.modalVisible}
+                    onShow={this.scanFingerPrint}>
+                    <View style={styles.modal}>
+                        <View style={styles.modalContainer}>
+                            <Image
+                                style={{ width: 64, height: 64 }}
+                                source={require('../../../assets/imgs/fingerprint.png')}
+                            />
+                            <Text style={{ color: '#666', fontWeight: '700', marginBottom: 10 }}>Fingerprint for "SSContract"</Text>
+                            <Text style={{ color: '#666' }}>Sử dụng Vân tay để mở khóa</Text>
+                            <TouchableOpacity
+                                onPress={async () => {
+                                    LocalAuthentication.cancelAuthenticate();
+                                    this.setModalVisible(!this.state.modalVisible);
+                                }}
+                                style={{ borderTopWidth: 1, borderTopColor: '#f5f5f5', width: 320, textAlign: 'center', padding: 10, alignItems: 'center', marginTop: 15 }}
+                            >
+                                <Text style={{ color: 'red', fontSize: 16 }}>Hủy</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+                {this.renderLoading(isShowLoading)}
+            </KeyboardAwareScrollView>
+        </SafeAreaView>
     )
 
     renderAuthentication = (email) => (
-        <View style={styles.mainContainer} >
-            <View style={[styles.mainContainer, styles.containerChild]}>
+        <SafeAreaView style={styles.mainContainer} >
+            <View style={styles.containerChild}>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={styles.title} >Your Contracts.<Text style={styles.titlePrimary}> Greener.</Text></Text>
                     <Text style={styles.subTitle}>Quản lý thông tin hợp đồng</Text>
@@ -312,7 +314,7 @@ class LoginScreen extends Component {
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 
     render() {
@@ -332,11 +334,11 @@ let ScreenHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: '#ebeef0',
-        height: ScreenHeight + StatusBar.currentHeight,
     },
     containerChild: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flex: 1
     },
     inputStyle: {
         width: ScreenWidth - 59,
