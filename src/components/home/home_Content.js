@@ -21,6 +21,7 @@ export default class HomeContent extends React.Component {
 
     state = {
         lstItems: [],
+        updateDate: new Date(),
     }
 
     componentDidMount = () => {
@@ -40,11 +41,12 @@ export default class HomeContent extends React.Component {
                 .then(function (response) {
                     _this.setState({
                         lstItems: response.data.lst,
+                        updateDate: new Date()
                     });
                 })
                 .catch(function (e) {
                     alert("Đã có lỗi xảy ra vui lòng thử lại sau.");
-                    //_this.props.doLogout();
+                    _this.props.doLogout();
                 })
                 .finally(function () {
                 });
@@ -53,6 +55,16 @@ export default class HomeContent extends React.Component {
 
     viewContractDetail = (id) => {
         this.props.viewContractDetail(id);
+    }
+
+    renderFormatDate = (date) => {
+        let hour = date.getHours().toString();
+        let min = date.getMinutes() > 10 ? date.getMinutes().toString() : '0' + date.getMinutes().toString();
+        let sec = date.getSeconds() > 10 ? date.getSeconds().toString() : '0' + date.getSeconds().toString();
+        let day = date.getDate() > 10 ? date.getDate().toString() : '0' + date.getDate().toString();
+        let month = date.getMonth() > 10 ? date.getMonth().toString() : '0' + date.getMonth().toString();
+        let year = date.getFullYear();
+        return hour + ':' + min + ':' + sec + ' ' + day + '/' + month + '/' + year;
     }
 
     renderContractItem = (lstItems) => {
@@ -93,7 +105,7 @@ export default class HomeContent extends React.Component {
     }
 
     render() {
-        let { lstItems } = this.state;
+        let { lstItems, updateDate } = this.state;
         return (
             <View style={{ backgroundColor: '#f0f9ff' }}>
                 <View style={{ padding: 20, flex: 1, flexDirection: 'column', paddingTop: 50 }}>
@@ -126,6 +138,9 @@ export default class HomeContent extends React.Component {
                         <TouchableOpacity style={{ flex: 1 }} onPress={this.getContractPaging}>
                             <Ionicons name={'md-refresh'} size={22} color='#2089dc' />
                         </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text style={{ flex: 1, fontSize: 13, color: '#999', marginTop: 5, marginBottom: 1 }}>Cập nhật lúc: {this.renderFormatDate(updateDate)}</Text>
                     </View>
                     {
                         this.renderContractItem(lstItems)

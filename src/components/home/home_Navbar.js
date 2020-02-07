@@ -22,7 +22,7 @@ export default class HomeNavbar extends React.Component {
                         {/*<View style={{ backgroundColor: '#fff', borderRadius: 110 / 2 }}>
                             <Image source={ListImages.UserDefaultAvatar} style={{ width: 110, height: 110, borderRadius: 110 / 2 }} />
                         </View>*/}
-                        <Text style={{ marginTop: 10, marginBottom: 5, color: '#fff', textTransform: 'lowercase' }}>{this.props.email}</Text>
+                        <Text style={{ marginTop: 30, marginBottom: 5, color: '#fff', textTransform: 'lowercase' }}>{this.props.email}</Text>
                     </View>
                 </LinearGradient>
 

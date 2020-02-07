@@ -10,6 +10,6 @@
     "\\src\\components\\layout",
     "\\src\\components\\setting"
   ],
-  "SelectedNode": "\\app.json",
+  "SelectedNode": "\\src\\components\\employer\\employer_list.js",
   "PreviewInSolutionExplorer": false
 }

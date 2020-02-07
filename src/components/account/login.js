@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Image, StatusBar, TextInput, Button, ActivityIndicator, AsyncStorage, Modal, Platform, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Image, StatusBar, TextInput, Button, ActivityIndicator, AsyncStorage, Modal, Platform, SafeAreaView, Vibration } from 'react-native';
 import base64 from 'react-native-base64'
 import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
@@ -50,8 +50,10 @@ class LoginScreen extends Component {
                     this.handleLogin();
                 })
             } else {
-                this.setState({ modalVisible: false }, () => {
-                    //alert("Đăng nhập không thành công");
+                this.setState({ modalVisible: false, isShowLoading: false }, () => {
+                    const DURATION = 2000;
+                    Vibration.vibrate(DURATION);
+                    Vibration.cancel();
                 })
             }
         } catch (e) {
@@ -71,7 +73,7 @@ class LoginScreen extends Component {
 
     handleSubmitAuthen = async () => {
         let { email, key1, key2, key3, key4 } = this.state;
-        await this.setState({ isShowLoading: true });
+        await this.setState({ isShowLoading: true, modalVisible: false });
 
         let _token = email + '+' + key1 + key2 + key3 + key4;
         var token = base64.encode(_token);
@@ -110,8 +112,8 @@ class LoginScreen extends Component {
             });
     }
 
-    handleLogin = () => {
-        this.setState({ isShowLoading: true });
+    handleLogin = async () => {
+        await this.setState({ isShowLoading: true, modalVisible: false });
         let dto = {
             'UserName': this.state.email,
             'Password': this.state.password,
@@ -164,7 +166,7 @@ class LoginScreen extends Component {
     }
 
     renderLogin = (email, password, isShowLoading) => (
-        <SafeAreaView style={{ height: ScreenHeight }}>
+        <SafeAreaView style={{ minHeight: ScreenHeight }}>
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -220,7 +222,6 @@ class LoginScreen extends Component {
                                 }
                             }}
                             style={!this.state.isCanFingerPrint ? { opacity: 0.5, alignItems: 'center' } : { opacity: 1, alignItems: 'center' }}
-                        //disabled={!this.state.isCanFingerPrint}
                         >
                             <Image
                                 style={{ width: 36, height: 36 }}
@@ -228,7 +229,7 @@ class LoginScreen extends Component {
                             />
                             <Text>
                                 Đăng nhập bằng vân tay
-                        </Text>
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -266,6 +267,7 @@ class LoginScreen extends Component {
 
     renderAuthentication = (email) => (
         <SafeAreaView style={styles.mainContainer} >
+            <View style={{ height: StatusBar.currentHeight }}></View>
             <View style={styles.containerChild}>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={styles.title} >Your Contracts.<Text style={styles.titlePrimary}> Greener.</Text></Text>
@@ -329,8 +331,8 @@ class LoginScreen extends Component {
 
 export default connect(null, actions)(LoginScreen);
 
-let ScreenWidth = Dimensions.get("window").width;
-let ScreenHeight = Dimensions.get("window").height;
+let ScreenWidth = Dimensions.get("screen").width;
+let ScreenHeight = Dimensions.get("screen").height;
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: '#ebeef0',

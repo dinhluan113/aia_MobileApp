@@ -18,13 +18,12 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : StatusBar.currentHeight;
-const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
-const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
+const NAV_BAR_HEIGHT = STATUS_BAR_HEIGHT + 100;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: STATUS_BAR_HEIGHT,
+        backgroundColor: '#f0f9ff'
     },
 });
 let JWT_TOKEN = '';
@@ -39,12 +38,14 @@ class EmployerTitle extends React.Component {
     };
 
     render() {
+        let lineHeight = STATUS_BAR_HEIGHT + 50;
+        let linePaddingTop = STATUS_BAR_HEIGHT + 11;
         return (
-            <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: 50, paddingTop: 35 }}>
-                <TouchableOpacity style={{ position: 'absolute', left: 10, top: 12 }} onPress={() => this.onGoToAddPage()}>
+            <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: lineHeight }}>
+                <TouchableOpacity style={{ position: 'absolute', left: 10, top: linePaddingTop }} onPress={() => this.onGoToAddPage()}>
                     <Icon name="add" size={25} color="#fff" />
                 </TouchableOpacity>
-                <Text style={{ position: 'absolute', left: 50, right: 50, top: 12, textAlign: 'center', color: '#fff', fontSize: 17, fontWeight: '700' }}>Danh sách nhân viên</Text>                
+                <Text style={{ position: 'absolute', left: 50, right: 50, top: linePaddingTop, textAlign: 'center', color: '#fff', fontSize: 17, fontWeight: '700' }}>Danh sách nhân viên</Text>                
             </LinearGradient>
         );
     }

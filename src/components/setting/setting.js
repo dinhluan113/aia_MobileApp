@@ -120,7 +120,7 @@ class SettingScreen extends React.Component {
         return (
             <SafeAreaView style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT, backgroundColor: '#f0f9ff' }}>
                 <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.topHeader}>
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 10 }}>
                         <View style={{ backgroundColor: '#fff', borderRadius: 110 / 2 }}>
                             <Image source={ListImages.UserDefaultAvatar} style={{ width: 110, height: 110, borderRadius: 110 / 2 }} />
                         </View>

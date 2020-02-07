@@ -26,6 +26,7 @@ const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const _crrDate = new Date();
 let JWT_TOKEN = '';
 let _IS_MOUNTED = false;
+let NAVBARHEIGHT = STATUS_BAR_HEIGHT + 50;
 class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -97,7 +98,7 @@ class HomeScreen extends React.Component {
     }
 
     renderNavBar = () => (
-        <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: STATUS_BAR_HEIGHT + 50, paddingTop: STATUS_BAR_HEIGHT, justifyContent: 'center', alignItems: 'center' }}>
+        <LinearGradient colors={['#04c1b3', '#1f709e']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ width: SCREEN_WIDTH, height: NAVBARHEIGHT, paddingTop: STATUS_BAR_HEIGHT, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: '#fff' }}>Quản lý hợp đồng thông minh</Text>
         </LinearGradient>
     )
